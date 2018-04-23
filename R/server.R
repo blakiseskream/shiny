@@ -407,7 +407,7 @@ startApp <- function(appObj, port, host, quiet) {
 
   if (is.numeric(port) || is.integer(port)) {
     if (!quiet) {
-      message('\n', 'Listening on http://', host, ':', port)
+      message('\n', 'Listening', host, ':', port)
     }
     return(startServer(host, port, handlerManager$createHttpuvApp()))
   } else if (is.character(port)) {
@@ -415,12 +415,12 @@ startApp <- function(appObj, port, host, quiet) {
       message('\n', 'Listening on domain socket ', port)
     }
     mask <- attr(port, 'mask')
-    if (is.null(mask)) {
-      stop("`port` is not a valid domain socket (missing `mask` attribute). ",
-           "Note that if you're using the default `host` + `port` ",
-           "configuration (and not domain sockets), then `port` must ",
-           "be numeric, not a string.")
-    }
+    # if (is.null(mask)) {
+    #   stop("`port` is not a valid domain socket (missing `mask` attribute). ",
+    #        "Note that if you're using the default `host` + `port` ",
+    #        "configuration (and not domain sockets), then `port` must ",
+    #        "be numeric, not a string.")
+    # }
     return(startPipeServer(port, mask, handlerManager$createHttpuvApp()))
   }
 }
@@ -761,7 +761,7 @@ runApp <- function(appDir=getwd(),
     # http://0.0.0.0/ doesn't work on QtWebKit (i.e. RStudio viewer)
     browseHost <- if (identical(host, "0.0.0.0")) "127.0.0.1" else host
 
-    appUrl <- paste("http://", browseHost, ":", port, sep="")
+    appUrl <- paste(browseHost, ":", port, sep="")
     if (is.function(launch.browser))
       launch.browser(appUrl)
     else if (launch.browser)
